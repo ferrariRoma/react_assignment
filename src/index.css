@@ -40,3 +40,36 @@ button {
   font-weight: 900;
   cursor: pointer;
 }
+
+#circle__container {
+  display: flex;
+}
+
+#div__container {
+  height: 100%;
+  margin-top: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#div__container > h3 {
+  font-size: larger;
+  font-weight: 900;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+h3 > span {
+  background-color: #f9a501;
+  border-radius: 10px;
+  padding: 3px;
+  color: white;
+}
+
+#rating__btn {
+  margin-top: 20px;
+  width: 300px;
+  background-color: #800180;
+  font-size: medium;
+}

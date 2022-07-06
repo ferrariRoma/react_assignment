@@ -72,5 +72,3 @@ const Avg = styled.div`
   font-weight: 900;
   margin-bottom: 10px;
 `;
-
-export default App;
