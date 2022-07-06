@@ -29,7 +29,7 @@ const setDates = () => {
   return DateResult;
 };
 
-const App = memo(() => {
+const Home = memo(() => {
   const [avg, setAvg] = useState(makeAvgPoint); // avg point생성
   const [Date, setDate] = useState(setDates); // 실시간 날짜배열생성
   const [point, setPoint] = useState(makeEachPoint); // 각 날짜별 노란checkBall 갯수
@@ -50,18 +50,13 @@ const App = memo(() => {
   };
   return (
     <>
-      <Route path="/" exact>
-        <h1>항해 일주일 평점</h1>
-        <DayBucket Point={point} Date={Date} />
-        <Avg>평균 평점</Avg>
-        <Avg>{avg}</Avg>
-        <button ref={ResetBtn} onClick={onClickReset}>
-          Reset
-        </button>
-      </Route>
-      <Route path="/date/:day" exact>
-        <EachDay />
-      </Route>
+      <h1>캠프 일주일 평점</h1>
+      <DayBucket Point={point} Date={Date} />
+      <Avg>평균 평점</Avg>
+      <Avg>{avg}</Avg>
+      <button ref={ResetBtn} onClick={onClickReset}>
+        Reset
+      </button>
     </>
   );
 });
@@ -72,3 +67,5 @@ const Avg = styled.div`
   font-weight: 900;
   margin-bottom: 10px;
 `;
+
+export default Home;

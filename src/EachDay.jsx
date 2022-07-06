@@ -1,8 +1,10 @@
-import React, { memo } from "react";
+import React, { useRef, memo, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import styled from "styled-components";
 
 const EachDay = memo(() => {
+  const [yellowball, setYellowball] = useState(0);
+  const Rating = useRef(null);
   const routing = useHistory();
   const param = useParams();
 
@@ -10,6 +12,12 @@ const EachDay = memo(() => {
   const onClickRatingBtn = () => {
     routing.push("/");
   };
+
+  const onClickRating = (e) => {
+    const clicked = Number(e.target.id) + 1;
+    setYellowball(clicked);
+  };
+
   return (
     <>
       <div id="div__container">
@@ -17,9 +25,24 @@ const EachDay = memo(() => {
           <span>{param.day}요일</span> 평점 남기기
         </h3>
         <div id="circle__container">
-          {tempArray.map((el, j) => (
-            <Balls key={j + "n"} />
-          ))}
+          {tempArray.map((el, j) =>
+            yellowball > j ? (
+              <Balls
+                key={j + "n"}
+                id={j}
+                colors
+                onClick={onClickRating}
+                ref={Rating}
+              />
+            ) : (
+              <Balls
+                key={j + "n"}
+                id={j}
+                onClick={onClickRating}
+                ref={Rating}
+              />
+            )
+          )}
         </div>
         <button id="rating__btn" onClick={onClickRatingBtn}>
           평점 남기기
