@@ -1,4 +1,4 @@
-import React, { useRef, memo, useState } from "react";
+import React, { useRef, memo, useState, useEffect } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import styled from "styled-components";
 
@@ -17,6 +17,24 @@ const EachDay = memo(() => {
     const clicked = Number(e.target.id) + 1;
     setYellowball(clicked);
   };
+
+  const handleKeyDown = (e) => {
+    const typed = e.key;
+    const reg = /\d/;
+    if (typed.match(reg) === null) {
+      return;
+    } else if (typed > 5 || typed < 1) {
+      return;
+    }
+    setYellowball(typed);
+  };
+
+  useEffect(() => {
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
 
   return (
     <>
