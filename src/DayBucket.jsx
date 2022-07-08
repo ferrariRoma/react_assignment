@@ -2,25 +2,36 @@ import styled from "styled-components";
 import React, { memo } from "react";
 import { useHistory } from "react-router-dom";
 
-const DayBucket = memo(({ Date, Point }) => {
+const DayBucket = memo(({ Week }) => {
+  // 버튼 누르면 상세 날짜 페이지로 이동
   const Day = useHistory();
   const onClickArrow = (eachDay) => {
-    Day.push(`/date/${eachDay}`);
+    if (!eachDay) {
+      alert(`아직 ${Week[0].day}요일 입니다.`);
+      return;
+    }
+    return Day.push(`/date/${eachDay}`);
   };
-  const tempArray = Array(5).fill(0);
+
   return (
     <>
-      {Date.map((day, i) => (
-        <DayBox Point={Point} key={i + "qw"}>
-          <p>{day}</p>
-          {tempArray.map((el, j) =>
-            j < Point[i] ? (
+      {Week.map((el, i) => (
+        <DayBox Point={el.rating} key={i + "qw"}>
+          <p>{el.day}</p>
+          {[...Array(5)].map((_, j) =>
+            j < el.rating ? (
               <Balls colors key={j + "e"} />
             ) : (
               <Balls key={j + "e"} />
             )
           )}
-          <TriButton onClick={() => onClickArrow(day)} />
+          {i === 0 ? (
+            <TriButton onClick={() => onClickArrow(el.day)} />
+          ) : i < 7 - new Date().getDay() ? (
+            <TriButton onClick={() => onClickArrow()} />
+          ) : (
+            <TriButton onClick={() => onClickArrow(el.day)} />
+          )}
         </DayBox>
       ))}
     </>

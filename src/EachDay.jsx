@@ -1,32 +1,39 @@
-import React, { useRef, memo, useState, useEffect } from "react";
+import React, { memo, useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import styled from "styled-components";
+import { useSelector, useDispatch } from "react-redux";
+import { dailyRatingFunc } from "./redux/modules/reduxPoint";
 
 const EachDay = memo(() => {
-  const [yellowball, setYellowball] = useState(0);
-  const Rating = useRef(null);
   const routing = useHistory();
   const param = useParams();
+  const date = useSelector((state) => state.reducer.point).filter(
+    (el) => el.day === param.day
+  );
+  const [yellowball, setYellowball] = useState(date[0].rating);
 
-  const tempArray = Array(5).fill(0);
-  const onClickRatingBtn = () => {
-    routing.push("/");
-  };
+  const dispatch = useDispatch();
 
+  // 동그라미를 클릭하면 평점을 매긴다.
   const onClickRating = (e) => {
     const clicked = Number(e.target.id) + 1;
     setYellowball(clicked);
   };
-
+  // 키다운 하면 노란색 공 입력
   const handleKeyDown = (e) => {
     const typed = e.key;
     const reg = /\d/;
     if (typed.match(reg) === null) {
       return;
-    } else if (typed > 5 || typed < 1) {
+    } else if (typed > 5) {
       return;
     }
-    setYellowball(typed);
+    setYellowball(Number(typed));
+  };
+  // 평점 남기기 버튼을 누르면 홈으로 간다.
+  const onClickRatingBtn = () => {
+    dispatch(dailyRatingFunc(param, yellowball));
+    routing.push("/");
   };
 
   useEffect(() => {
@@ -43,22 +50,11 @@ const EachDay = memo(() => {
           <span>{param.day}요일</span> 평점 남기기
         </h3>
         <div id="circle__container">
-          {tempArray.map((el, j) =>
+          {[...Array(5)].map((el, j) =>
             yellowball > j ? (
-              <Balls
-                key={j + "n"}
-                id={j}
-                colors
-                onClick={onClickRating}
-                ref={Rating}
-              />
+              <Balls key={j + "n"} id={j} colors onClick={onClickRating} />
             ) : (
-              <Balls
-                key={j + "n"}
-                id={j}
-                onClick={onClickRating}
-                ref={Rating}
-              />
+              <Balls key={j + "n"} id={j} onClick={onClickRating} />
             )
           )}
         </div>
