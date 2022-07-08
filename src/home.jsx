@@ -1,10 +1,9 @@
 import React, { useState, useRef, memo, useEffect } from "react";
 import styled from "styled-components";
-import { Route } from "react-router-dom";
 import DayBucket from "./DayBucket";
-import EachDay from "./EachDay";
+import store from "./redux/configStore";
 
-const makeAvgPoint = () => {
+/* const makeAvgPoint = () => {
   const avgs = Array(7).fill(0);
   const RandomNum = avgs.map((el) => Math.floor(Math.random() * 5 + 1));
   return (RandomNum.reduce((acc, el) => acc + el, 0) / 7).toFixed(1);
@@ -14,7 +13,7 @@ const makeEachPoint = () => {
   const eachArray = Array(7).fill(0);
   const eachPoint = eachArray.map((el) => Math.floor(Math.random() * 5 + 1));
   return eachPoint;
-};
+}; */
 
 const setDates = () => {
   const DateArray = ["일", "월", "화", "수", "목", "금", "토"];
@@ -30,22 +29,22 @@ const setDates = () => {
 };
 
 const Home = memo(() => {
-  const [avg, setAvg] = useState(makeAvgPoint); // avg point생성
+  const [avg, setAvg] = useState(0); // avg point생성
   const [Date, setDate] = useState(setDates); // 실시간 날짜배열생성
-  const [point, setPoint] = useState(makeEachPoint); // 각 날짜별 노란checkBall 갯수
+  const [point, setPoint] = useState(0); // 각 날짜별 노란checkBall 갯수
   const ResetBtn = useRef(null); // 리셋 버튼
 
   useEffect(() => {
-    setPoint(makeEachPoint());
+    // setPoint(makeEachPoint());
+    // setAvg(makeAvgPoint());
     setDate(setDates());
-    setAvg(makeAvgPoint());
   }, []);
 
   const onClickReset = (e) => {
     if (avg === "0.0") {
       return;
     }
-    setPoint(makeEachPoint());
+    // setPoint(makeEachPoint());
     setAvg("0.0");
   };
   return (
