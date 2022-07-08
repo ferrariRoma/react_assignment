@@ -1,9 +1,9 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { combineReducers } from "@reduxjs/toolkit";
-import reducer from "./modules/reduxPoint";
+import pointReducer from "./modules/reduxPoint";
 
-const rootReducer = combineReducers({ reducer });
+const rootReducer = combineReducers({ reducer: pointReducer });
 
-const store = configureStore(rootReducer);
+const store = configureStore({ reducer: rootReducer });
 
 export default store;
