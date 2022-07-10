@@ -1,17 +1,15 @@
 import React from "react";
-import { Route } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import EachDay from "./EachDay";
 import Home from "./Home";
 
 const App = () => {
   return (
     <>
-      <Route path="/" exact>
-        <Home />
-      </Route>
-      <Route path="/date/:day" exact>
-        <EachDay />
-      </Route>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/date/:day" element={<EachDay />} />
+      </Routes>
     </>
   );
 };

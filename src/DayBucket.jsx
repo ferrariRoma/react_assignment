@@ -1,16 +1,16 @@
 import styled from "styled-components";
 import React, { memo } from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const DayBucket = memo(({ Week }) => {
   // 버튼 누르면 상세 날짜 페이지로 이동
-  const Day = useHistory();
+  const Day = useNavigate();
   const onClickArrow = (eachDay) => {
     if (!eachDay) {
       alert(`아직 ${Week[0].day}요일 입니다.`);
       return;
     }
-    return Day.push(`/date/${eachDay}`);
+    return Day(`/date/${eachDay}`);
   };
 
   return (

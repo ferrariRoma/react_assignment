@@ -1,11 +1,11 @@
 import React, { memo, useEffect, useState } from "react";
-import { useHistory, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 import { dailyRatingFunc } from "./redux/modules/reduxPoint";
 
 const EachDay = memo(() => {
-  const routing = useHistory();
+  const routing = useNavigate();
   const param = useParams();
   const date = useSelector((state) => state.reducer.point).filter(
     (el) => el.day === param.day
@@ -33,7 +33,7 @@ const EachDay = memo(() => {
   // 평점 남기기 버튼을 누르면 홈으로 간다.
   const onClickRatingBtn = () => {
     dispatch(dailyRatingFunc(param, yellowball));
-    routing.push("/");
+    routing("/");
   };
 
   useEffect(() => {
