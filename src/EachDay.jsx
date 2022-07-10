@@ -1,6 +1,6 @@
 import React, { memo, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import styled from "styled-components";
+import { Balls } from "./styledComponent";
 import { useSelector, useDispatch } from "react-redux";
 import { dailyRatingFunc } from "./redux/modules/reduxPoint";
 
@@ -67,13 +67,3 @@ const EachDay = memo(() => {
 });
 
 export default EachDay;
-
-const Balls = styled.div`
-  width: 30px;
-  height: 30px;
-  border-radius: 30px;
-  margin: 5px;
-  background: ${(props) => {
-    return props.colors ? "#FEEB3B" : "#DDDDDD";
-  }};
-`;

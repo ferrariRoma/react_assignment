@@ -1,8 +1,8 @@
 import React, { useRef, memo } from "react";
-import styled from "styled-components";
 import DayBucket from "./DayBucket";
 import { useSelector } from "react-redux";
 import { setDates } from "./redux/modules/reduxPoint";
+import { Avg } from "./styledComponent";
 
 const Home = memo(() => {
   // point객체 가져오기
@@ -24,12 +24,5 @@ const Home = memo(() => {
     </>
   );
 });
-
-const Avg = styled.div`
-  color: blue;
-  font-size: 25px;
-  font-weight: 900;
-  margin-bottom: 10px;
-`;
 
 export default Home;
