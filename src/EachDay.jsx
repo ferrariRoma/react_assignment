@@ -2,7 +2,10 @@ import React, { memo, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Balls } from "./styledComponent";
 import { useSelector, useDispatch } from "react-redux";
-import { dailyRatingFunc } from "./redux/modules/reduxPoint";
+import {
+  dailyRatingFunc,
+  updateWeeklyRatingFB,
+} from "./redux/modules/reduxPoint";
 
 const EachDay = memo(() => {
   const routing = useNavigate();
@@ -32,7 +35,7 @@ const EachDay = memo(() => {
   };
   // 평점 남기기 버튼을 누르면 홈으로 간다.
   const onClickRatingBtn = () => {
-    dispatch(dailyRatingFunc(param, yellowball));
+    dispatch(updateWeeklyRatingFB(param, yellowball));
     routing("/");
   };
 

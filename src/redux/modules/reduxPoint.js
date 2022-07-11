@@ -1,6 +1,20 @@
+import { db } from "../../firebase";
+import {
+  collection,
+  getDocs,
+  doc,
+  setDoc,
+  updateDoc,
+  addDoc,
+  getDoc,
+} from "@firebase/firestore";
+import { useParams } from "react-router-dom";
+
 export const DAILYRATING = "record daily rating";
 export const LASTWEEK = "record last week";
 export const TWOWEEKSAGO = "record two weeks ago";
+// 1. firestore에서 데이터를 가지고 오는 액션 타입 설정
+const LOAD = "weeklyRating/LOAD";
 
 export const initialState = {
   point: [
@@ -19,6 +33,15 @@ export const initialState = {
 
 const pointReducer = (state = initialState, action = {}) => {
   switch (action.type) {
+    case LOAD: {
+      const loadedData = action.weeklyRating;
+      return {
+        point: loadedData[3].point,
+        avgRating: Number(loadedData[1].avgRating).toFixed(1),
+        lastWeek: Number(loadedData[0].lastWeek).toFixed(1),
+        twoWeeksAgo: Number(loadedData[2].twoWeeksAgo).toFixed(1),
+      };
+    }
     case DAILYRATING: {
       // avgRating도 함께 변경
       const thisDay = JSON.parse(JSON.stringify(state.point));
@@ -44,6 +67,43 @@ const pointReducer = (state = initialState, action = {}) => {
 export function dailyRatingFunc(index, rating) {
   return { type: DAILYRATING, index: index.day, rating };
 }
+
+// 2. firestore action function 설정
+export function loadWeeklyRating(weeklyRating) {
+  return { type: LOAD, weeklyRating };
+}
+
+// 3. firestore에서 데이터를 가져오는 middleware인 thunk 설정
+export const loadWeeklyRatingFB = () => {
+  return async function (dispatch) {
+    const weeklyRatingData = await getDocs(collection(db, "weeklyRating"));
+    let weeklyRatingList = [];
+    weeklyRatingData.forEach((el) => {
+      weeklyRatingList.push({ id: el.id, ...el.data() });
+    });
+    dispatch(loadWeeklyRating(weeklyRatingList));
+  };
+};
+
+export const updateWeeklyRatingFB = (date, dailyRating) => {
+  return async (dispatch, getState) => {
+    const docRef = doc(db, "weeklyRating", "JhoXEqilK3JSrz58SvqX");
+    const temp = (await getDoc(docRef)).data().point;
+    let index = 0;
+    const point = [...temp].map((el, i) => {
+      if (el.day === date.day) {
+        index = i;
+        return { ...el, rating: dailyRating };
+      } else {
+        return el;
+      }
+    });
+    await updateDoc(docRef, { point });
+    let update_redux = getState().reducer.point.filter((el, i) => index === i);
+    update_redux = { ...update_redux[0], rating: dailyRating };
+    dispatch(dailyRatingFunc(update_redux.day, update_redux.rating));
+  };
+};
 
 // 평균을 구하는 함수
 function makeAvgPoint(point) {

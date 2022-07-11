@@ -1,23 +1,27 @@
 import React, { memo } from "react";
 import DayBucket from "./DayBucket";
-import { useSelector } from "react-redux";
-import { setDates } from "./redux/modules/reduxPoint";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  loadWeeklyRatingFB,
+  setDates,
+  loadWeeklyRating,
+} from "./redux/modules/reduxPoint";
 import { Avg } from "./styledComponent";
-/* import { collection, getDocs } from "firebase/firestore";
-import { db } from "./firebase"; */
+import {
+  collection,
+  getDocs,
+  addDoc,
+  doc,
+  updateDoc,
+  deleteDoc,
+} from "firebase/firestore";
+import { db } from "./firebase";
 
 const Home = memo(() => {
-  /*   React.useEffect(() => {
-    async function fetchData() {
-      console.log(db);
-      const query = await getDocs(collection(db, "weeklyRating"));
-      query.forEach((el) => {
-        console.log(el.id);
-        console.log(el.data());
-      });
-    }
-    fetchData();
-  }, []); */
+  const dispatch = useDispatch();
+  React.useEffect(() => {
+    dispatch(loadWeeklyRatingFB());
+  }, []);
   // point객체 가져오기
   const point = useSelector((state) => state.reducer.point);
   // 날짜 초기화하기
