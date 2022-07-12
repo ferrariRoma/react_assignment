@@ -3,12 +3,9 @@ import {
   collection,
   getDocs,
   doc,
-  setDoc,
   updateDoc,
-  addDoc,
   getDoc,
 } from "@firebase/firestore";
-import { useParams } from "react-router-dom";
 
 export const DAILYRATING = "record daily rating";
 export const LASTWEEK = "record last week";
